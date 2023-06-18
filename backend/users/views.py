@@ -1,6 +1,6 @@
 from djoser.views import UserViewSet
 
-from .serializers import CustomUserSerializer, CustomUserCreateSerializer
+from .serializers import CustomUserCreateSerializer, CustomUserSerializer
 
 
 class CustomUserViewSet(UserViewSet):

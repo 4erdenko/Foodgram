@@ -1,19 +1,15 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import (EmailValidator, MaxLengthValidator,
+                                    MinLengthValidator, RegexValidator)
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import (
-    EmailValidator,
-    MaxLengthValidator,
-    MinLengthValidator,
-    RegexValidator,
-)
-from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
     email = models.EmailField(
         verbose_name=_('email address'),
-        unique=True, validators=[EmailValidator(), MaxLengthValidator(254)]
+        unique=True,
+        validators=[EmailValidator(), MaxLengthValidator(254)],
     )
     username = models.CharField(
         verbose_name=_('username'),
@@ -43,7 +39,7 @@ class User(AbstractUser):
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
-        ordering = 'id',
+        ordering = ('id',)
 
     def __str__(self):
         return self.username

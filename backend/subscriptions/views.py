@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model
-from rest_framework import viewsets, status
+from rest_framework import status, viewsets
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
-
 from subscriptions.models import Subscription
 from subscriptions.serializers import SubscriptionSerializer
 
