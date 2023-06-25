@@ -1,32 +1,24 @@
-from rest_framework.response import Response
-
+from django_filters.rest_framework import DjangoFilterBackend
+from recipes.filters import IngredientFilter
 from recipes.models import Ingredient, Recipe, Tag
-from recipes.serializers import (
-    IngredientSerializer,
-    RecipeSerializer,
-    TagSerializer,
-)
-from rest_framework import permissions, viewsets, status
+from recipes.permissions import IsAuthorOrReadOnly
+from recipes.serializers import (IngredientSerializer, RecipeSerializer,
+                                 TagSerializer)
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-
-    # def perform_create(self, serializer):
-    #     serializer.save(author=self.request.user)
-    #
-    # def create(self, request, *args, **kwargs):
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_create(serializer)
-    #     headers = self.get_success_headers(serializer.data)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    permission_classes = (IsAuthorOrReadOnly, IsAuthenticatedOrReadOnly)
 
 
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    filter_backends = DjangoFilterBackend,
+    filterset_class = IngredientFilter
 
 
 class TagViewSet(viewsets.ModelViewSet):

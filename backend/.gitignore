@@ -248,3 +248,4 @@ cython_debug/
 .idea/
 migrations/
 bak.py
+tests

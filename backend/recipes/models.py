@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -41,7 +42,9 @@ class Recipe(models.Model):
         related_name='recipes',
     )
     name = models.CharField(max_length=200, verbose_name='Название')
-    image = models.ImageField(upload_to='recipes/', verbose_name=_('Image'))
+    image = models.ImageField(
+        upload_to='recipes/', verbose_name=_('Image'), blank=False
+    )
     text = models.TextField(verbose_name='Описание')
     ingredients = models.ManyToManyField(
         Ingredient,
@@ -54,7 +57,9 @@ class Recipe(models.Model):
         Tag, verbose_name='Тэги', related_name='recipes'
     )
     cooking_time = models.PositiveIntegerField(
-        verbose_name='Время приготовления'
+        verbose_name='Время приготовления',
+        validators=[MinValueValidator(1)],
+        blank=False,
     )
 
     class Meta:
@@ -80,18 +85,23 @@ class RecipeIngredient(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Ингредиент',
         related_name='recipe_ingredients',
+        blank=False,
     )
-    amount = models.PositiveIntegerField(default=0, verbose_name='Количество')
+    amount = models.PositiveIntegerField(
+        verbose_name='Количество',
+        blank=False,
+        validators=[MinValueValidator(1)],
+    )
 
     class Meta:
         verbose_name = 'Ингредиент рецепта'
         verbose_name_plural = 'Ингредиенты рецептов'
-        constraints = (
-            models.UniqueConstraint(
-                fields=('recipe', 'ingredient'),
-                name='unique_recipe_ingredient',
-            ),
-        )
+        # constraints = (
+        #     models.UniqueConstraint(
+        #         fields=('recipe', 'ingredient'),
+        #         name='unique_recipe_ingredient',
+        #     ),
+        # )
 
     def __str__(self):
         return (

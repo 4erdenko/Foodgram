@@ -1,11 +1,9 @@
 import os
 import sys
 
-from django.utils.version import get_version
-import os
 import django
 from django.conf import settings
-
+from django.utils.version import get_version
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'backend.settings'  # замените на ваш путь
 django.setup()
