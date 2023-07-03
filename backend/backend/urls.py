@@ -13,6 +13,7 @@ urlpatterns = [
                 path('users/', include('subscriptions.urls')),
                 path('', include('users.urls')),
                 path('', include('favorites.urls')),
+                path('',include('shoppinglist.urls')),
                 path('', include('recipes.urls')),
 
             ]
