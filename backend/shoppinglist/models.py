@@ -5,9 +5,9 @@ from recipes.models import Recipe
 
 
 class ShoppingList(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE,
-                             related_name='shopping_list')
-    recipe = models.ForeignKey(Recipe,
-                               on_delete=models.CASCADE)
-
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='shopping_list',
+    )
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)

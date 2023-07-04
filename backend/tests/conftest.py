@@ -5,7 +5,9 @@ import django
 from django.conf import settings
 from django.utils.version import get_version
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'backend.settings'  # замените на ваш путь
+os.environ[
+    'DJANGO_SETTINGS_MODULE'
+] = 'backend.settings'  # замените на ваш путь
 django.setup()
 
 
@@ -15,9 +17,8 @@ sys.path.append(BASE_DIR)
 root_dir_content = os.listdir(BASE_DIR)
 PROJECT_DIR_NAME = 'backend'
 
-if (
-        PROJECT_DIR_NAME not in root_dir_content
-        or not os.path.isdir(os.path.join(BASE_DIR, PROJECT_DIR_NAME))
+if PROJECT_DIR_NAME not in root_dir_content or not os.path.isdir(
+    os.path.join(BASE_DIR, PROJECT_DIR_NAME)
 ):
     assert False, (
         f'В директории `{BASE_DIR}` не найдена папка c проектом '

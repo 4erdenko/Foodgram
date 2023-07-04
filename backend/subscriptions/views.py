@@ -74,6 +74,3 @@ class UserSubscribeView(GenericViewSet):
                 {'detail': 'Вы не подписаны на данного автора.'},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
-
-

@@ -6,18 +6,18 @@ from django.http import FileResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.decorators import action, api_view, permission_classes, \
-    authentication_classes
+from rest_framework.decorators import (action, api_view,
+                                       authentication_classes,
+                                       permission_classes)
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
-from shoppinglist.models import ShoppingList
 from recipes.models import Recipe
 from recipes.serializers import ShortRecipeSerializer
 from shoppinglist.cart_to_pdf import generate_pdf
-from shoppinglist.serializers import ShoppingListSerializer
 from shoppinglist.models import ShoppingList
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticated
+from shoppinglist.serializers import ShoppingListSerializer
 
 
 class ShoppingListViewSet(ModelViewSet):
@@ -38,9 +38,11 @@ class ShoppingListViewSet(ModelViewSet):
             if created:
                 serializer = ShortRecipeSerializer(add_to_card.recipe)
                 return Response(
-                    serializer.data, status=status.HTTP_201_CREATED)
+                    serializer.data, status=status.HTTP_201_CREATED
+                )
             elif ShoppingList.objects.filter(
-                    user=request.user, recipe=recipe).exists():
+                user=request.user, recipe=recipe
+            ).exists():
                 return Response(
                     {'detail': 'Рецепт уже в корзине'},
                     status=status.HTTP_400_BAD_REQUEST,
@@ -64,6 +66,6 @@ def download_shopping_card(request):
     pdf = generate_pdf(request.user)
 
     # Верните PDF в ответе
-    return FileResponse(pdf, as_attachment=True,
-                        filename=f'Список покупок от {date}.pdf')
-
+    return FileResponse(
+        pdf, as_attachment=True, filename=f'Список покупок от {date}.pdf'
+    )

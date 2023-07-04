@@ -13,14 +13,14 @@ urlpatterns = [
                 path('users/', include('subscriptions.urls')),
                 path('', include('users.urls')),
                 path('', include('favorites.urls')),
-                path('',include('shoppinglist.urls')),
+                path('', include('shoppinglist.urls')),
                 path('', include('recipes.urls')),
-
             ]
         ),
     ),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+    )

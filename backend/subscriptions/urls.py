@@ -10,7 +10,9 @@ urlpatterns = [
     ),
     path(
         '<int:id>/subscribe/',
-        UserSubscribeView.as_view({'post': 'subscribe', 'delete': 'unsubscribe'}),
+        UserSubscribeView.as_view(
+            {'post': 'subscribe', 'delete': 'unsubscribe'}
+        ),
         name='user-subscribe',
     ),
 ]

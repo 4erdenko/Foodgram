@@ -1,13 +1,12 @@
 import os
 from collections import defaultdict
+from io import BytesIO
 
 from django.conf import settings
+from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-from io import BytesIO
 
 from shoppinglist.models import ShoppingList
 
