@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.contrib.admin import register
-
 from recipes.models import Ingredient, Recipe, RecipeIngredient, Tag
 
 

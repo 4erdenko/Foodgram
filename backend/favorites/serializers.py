@@ -1,8 +1,7 @@
-from rest_framework.fields import ReadOnlyField
-from rest_framework.serializers import ModelSerializer
-
 from favorites.models import Favorite
 from recipes.serializers import ShortRecipeSerializer
+from rest_framework.fields import ReadOnlyField
+from rest_framework.serializers import ModelSerializer
 
 
 class FavoriteSerializer(ModelSerializer):

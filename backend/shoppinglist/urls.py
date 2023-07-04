@@ -1,5 +1,4 @@
 from django.urls import path
-
 from shoppinglist.views import ShoppingListViewSet, download_shopping_card
 
 urlpatterns = [

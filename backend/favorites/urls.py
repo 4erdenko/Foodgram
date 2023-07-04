@@ -1,7 +1,6 @@
 from django.urls import include, path
-from rest_framework import routers
-
 from favorites.views import FavoriteViewSet
+from rest_framework import routers
 
 urlpatterns = [
     path(

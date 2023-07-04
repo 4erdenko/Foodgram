@@ -1,14 +1,13 @@
 from django.shortcuts import get_object_or_404
+from favorites.models import Favorite
+from favorites.serializers import FavoriteSerializer
+from recipes.models import Recipe
+from recipes.serializers import ShortRecipeSerializer
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
-
-from favorites.models import Favorite
-from favorites.serializers import FavoriteSerializer
-from recipes.models import Recipe
-from recipes.serializers import ShortRecipeSerializer
 
 
 class FavoriteViewSet(ViewSet):

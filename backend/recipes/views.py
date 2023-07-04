@@ -1,12 +1,11 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-
 from recipes.filters import IngredientFilter
 from recipes.models import Ingredient, Recipe, Tag
 from recipes.permissions import IsAuthorOrReadOnly
 from recipes.serializers import (IngredientSerializer, RecipeSerializer,
                                  TagSerializer)
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
