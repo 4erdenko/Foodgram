@@ -1,9 +1,7 @@
 import datetime
 
-from django.http import FileResponse, HttpResponse
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404
-from recipes.models import Recipe
-from recipes.serializers import ShortRecipeSerializer
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import (action, api_view,
@@ -12,6 +10,9 @@ from rest_framework.decorators import (action, api_view,
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+
+from recipes.models import Recipe
+from recipes.serializers import ShortRecipeSerializer
 from shoppinglist.cart_to_pdf import generate_pdf
 from shoppinglist.models import ShoppingList
 from shoppinglist.serializers import ShoppingListSerializer

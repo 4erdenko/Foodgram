@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from recipes.models import Recipe
 
 
@@ -18,4 +19,5 @@ class ShoppingList(models.Model):
         verbose_name_plural = 'Списки покупок'
 
     def __str__(self):
-        return f'{self.recipe.name} в был добавлен в корзину пользователя {self.user}'
+        return (f'{self.recipe.name} в был добавлен в корзину пользователя'
+                f' {self.user}')

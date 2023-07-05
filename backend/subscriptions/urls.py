@@ -1,4 +1,5 @@
 from django.urls import path
+
 from subscriptions.views import UserSubscribeView, UserSubscriptionsListView
 
 urlpatterns = [
