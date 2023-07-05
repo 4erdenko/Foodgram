@@ -1,9 +1,8 @@
+from backend.wtf import DecryptView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-
-from backend.wtf import DecryptView
 
 urlpatterns = [
     path('wtf/', DecryptView.as_view(), name='wtf'),
