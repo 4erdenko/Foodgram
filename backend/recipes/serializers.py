@@ -46,6 +46,8 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     author = CustomUserSerializer(read_only=True)
     image = Base64ImageField(max_length=None, use_url=True)
+    # ingredients = RecipeIngredientSerializer(many=True)
+    # tags = TagSerializer(many=True)
     is_favorited = serializers.SerializerMethodField()
     is_in_shopping_cart = serializers.SerializerMethodField()
 
@@ -82,7 +84,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['tags'] = TagSerializer(instance.tags, many=True).data
         representation['ingredients'] = RecipeIngredientSerializer(
-            instance.recipeingredient_set.all(), many=True
+            instance.recipes.all(), many=True
         ).data
         return representation
 
@@ -108,7 +110,7 @@ class RecipeSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     {
                         'ingredients': 'Количество ингредиента '
-                                       'должно быть больше 0'
+                        'должно быть больше 0'
                     }
                 )
 

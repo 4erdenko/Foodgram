@@ -20,8 +20,8 @@ class FavoriteViewSet(ViewSet):
         detail=True,
         methods=['post', 'delete'],
     )
-    def favorite(self, request, recipe_id):
-        recipe = get_object_or_404(Recipe, id=recipe_id)
+    def favorite(self, request, pk):
+        recipe = get_object_or_404(Recipe, id=pk)
         if request.method == 'POST':
             favorite, created = Favorite.objects.get_or_create(
                 user=request.user, recipe=recipe

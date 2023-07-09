@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
+from users.models import Subscription
+
 User = get_user_model()
 
 
@@ -43,3 +45,15 @@ class CustomUserSerializer(UserSerializer):
         if self.context.get('request').user.is_anonymous:
             ret.pop('is_subscribed')
         return ret
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = ('following',)
+
+    def to_representation(self, instance):
+        serializer = CustomUserSerializer(
+            instance.following, context=self.context
+        )
+        return serializer.data

@@ -13,10 +13,7 @@ urlpatterns = [
         include(
             [
                 path('auth/', include('djoser.urls.authtoken')),
-                path('users/', include('subscriptions.urls')),
                 path('', include('users.urls')),
-                path('', include('favorites.urls')),
-                path('', include('shoppinglist.urls')),
                 path('', include('recipes.urls')),
             ]
         ),

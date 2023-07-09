@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import register
 
-from users.models import User
+from users.models import Subscription, User
 
 
 @register(User)
@@ -18,3 +18,11 @@ class UserAdmin(admin.ModelAdmin):
         'last_name',
         'email',
     )
+
+
+@register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('follower', 'following')
+    search_fields = ('follower', 'following')
+    list_filter = ('follower', 'following')
+    empty_value_display = '-пусто-'

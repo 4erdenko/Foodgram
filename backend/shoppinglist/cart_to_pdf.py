@@ -25,7 +25,7 @@ def generate_pdf(user):
     for shopping_list in shopping_lists:
         # Итерируемся по каждому ингредиенту в рецепте,
         # с текущим списком покупок
-        for ingredient in shopping_list.recipe.recipeingredient_set.all():
+        for ingredient in shopping_list.recipe.recipes.all():
             # Используем defaultdict для автоматического создания
             # нулевого значения, если ключ не существует
             ingredients[str(ingredient.ingredient)] += ingredient.amount
