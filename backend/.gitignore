@@ -250,3 +250,4 @@ migrations/
 bak.py
 tests
 wtf.py
+setup.cfg
