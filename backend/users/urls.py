@@ -1,31 +1,12 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from users.views import (UserSubscribeView, UserSubscriptionsListView,
-                         UserViewSet)
+from users.views import UserSubscribeView
 
 router = DefaultRouter()
-router.register('users', UserViewSet, basename='users')
+router.register('users', UserSubscribeView)
+router.register('users', UserSubscribeView, basename='subscriptions')
 
 urlpatterns = [
-    path(
-        'users/',
-        include(
-            [
-                path(
-                    'subscriptions/',
-                    UserSubscriptionsListView.as_view(),
-                    name='user-subscriptions',
-                ),
-                path(
-                    '<int:id>/subscribe/',
-                    UserSubscribeView.as_view(
-                        {'post': 'subscribe', 'delete': 'unsubscribe'}
-                    ),
-                    name='user-subscribe',
-                ),
-            ]
-        ),
-    ),
     path('', include(router.urls)),
 ]

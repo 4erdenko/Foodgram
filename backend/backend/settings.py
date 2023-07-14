@@ -23,9 +23,7 @@ INSTALLED_APPS = [
     'django_filters',
     'djoser',
     'users',
-    'favorites',
     'recipes',
-    'shoppinglist',
 ]
 
 MIDDLEWARE = [
@@ -124,6 +122,14 @@ DJOSER = {
         'user': ['rest_framework.permissions.IsAuthenticated'],
     },
 }
+# --------------------------------------------------------------- #
+# Июзернэймы, запрещенные к регистрации для пользователей системы #
+# --------------------------------------------------------------- #
+FORBIDDEN_USERNAMES = ['me', 'admin', 'superuser']
+
+# --------------------------------------------------------------- #
+# Длины полей, используемых в моделях приложений users и recipes  #
+# --------------------------------------------------------------- #
 MAX_USERNAME_LENGTH = 150
 MAX_FIRST_NAME_LENGTH = 150
 MAX_LAST_NAME_LENGTH = 150
@@ -133,3 +139,7 @@ MAX_INGREDIENT_MEASUREMENT_UNIT_LENGTH = 200
 MAX_TAG_NAME_LENGTH = 50
 MAX_TAG_COLOR_LENGTH = 7
 MAX_RECIPE_NAME_LENGTH = 200
+MIN_COOKING_TIME = 1
+MAX_COOKING_TIME = 20161
+MIN_AMOUNT = 1
+MAX_AMOUNT = 10000

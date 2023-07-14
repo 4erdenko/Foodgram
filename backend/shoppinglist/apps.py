@@ -1,6 +1,0 @@
-from django.apps import AppConfig
-
-
-class ShoppinglistConfig(AppConfig):
-    name = 'shoppinglist'
-    verbose_name = 'Список покупок'
