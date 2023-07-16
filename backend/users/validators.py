@@ -11,10 +11,11 @@ def validate_username(value):
             f'в качестве имени пользователя.'
         )
 
-    if not re.match(r'^[\w.@+-]+\Z', value):
+    invalid_chars = [
+        char for char in value if not re.match(r'^[\w.@+-]+\Z', char)
+    ]
+    if invalid_chars:
         raise ValidationError(
-            'Вы не можете использовать это имя '
-            'пользователя.'
-            'Допустимы только буквы, цифры и следующие '
-            'символы: @, ., +, -'
+            f'Имя пользователя содержит недопустимые символы: '
+            f'{", ".join(invalid_chars)}'
         )

@@ -8,12 +8,6 @@ from users.models import Subscription
 User = get_user_model()
 
 
-class ShortRecipeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Recipe
-        fields = ('id', 'name', 'image', 'cooking_time')
-
-
 class CustomUserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
@@ -28,7 +22,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 
 
 class CustomUserSerializer(UserSerializer):
-    is_subscribed = serializers.SerializerMethodField()
+    is_subscribed = serializers.SerializerMethodField(read_only=True)
 
     class Meta(UserSerializer.Meta):
         model = User
@@ -48,30 +42,13 @@ class CustomUserSerializer(UserSerializer):
         return user.follower.filter(following=obj).exists()
 
 
-class SubscriptionSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(source='following.email', read_only=True)
-    id = serializers.IntegerField(source='following.id', read_only=True)
-    username = serializers.CharField(
-        source='following.username', read_only=True
-    )
-    first_name = serializers.CharField(
-        source='following.first_name', read_only=True
-    )
-    last_name = serializers.CharField(
-        source='following.last_name', read_only=True
-    )
+class UserSubscriptionSerializer(CustomUserSerializer):
     is_subscribed = serializers.SerializerMethodField()
     recipes = serializers.SerializerMethodField()
     recipes_count = serializers.SerializerMethodField()
 
-    class Meta:
-        model = Subscription
-        fields = (
-            'email',
-            'id',
-            'username',
-            'first_name',
-            'last_name',
+    class Meta(CustomUserSerializer.Meta):
+        fields = CustomUserSerializer.Meta.fields + (
             'is_subscribed',
             'recipes',
             'recipes_count',
@@ -79,35 +56,34 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         user = self.context.get('request').user
-        return user.follower.filter(following=obj.following).exists()
+        return user.follower.filter(following=obj).exists()
 
     def get_recipes(self, obj):
-        recipes = Recipe.objects.filter(author=obj.following)
-        return ShortRecipeSerializer(recipes, many=True).data
+        from recipes.serializers import ShortRecipeSerializer
+
+        recipes = Recipe.objects.filter(author=obj)
+        return ShortRecipeSerializer(
+            recipes, many=True, context=self.context
+        ).data
 
     def get_recipes_count(self, obj):
-        return Recipe.objects.filter(author=obj.following).count()
+        return Recipe.objects.filter(author=obj).count()
 
-    def validate(self, data):
-        user = self.context.get('request').user.id
-        following = self.context.get('following')
-        if user == following:
-            raise serializers.ValidationError(
-                {'detail': 'Вы не можете подписаться на себя'}
-            )
-        if Subscription.objects.filter(
-            follower=user, following=following
-        ).exists():
-            raise serializers.ValidationError(
-                {'detail': 'Вы уже подписаны на этого автора'}
-            )
-        return data
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = (
+            'follower',
+            'following',
+        )
 
     def create(self, validated_data):
-        follower_id = self.context.get('follower')
-        following_id = self.context.get('following')
-        instance = Subscription.objects.create(
-            follower_id=follower_id,
-            following_id=following_id,
-        )
-        return self.to_representation(instance)
+        subscription = Subscription.objects.create(**validated_data)
+        user = subscription.following
+        context = {
+            'request': self.context.get('request'),
+            'is_subscribed': True,
+        }
+        user_data = UserSubscriptionSerializer(user, context=context).data
+        return user_data

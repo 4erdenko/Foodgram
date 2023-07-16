@@ -22,7 +22,7 @@ class RecipeAdmin(admin.ModelAdmin):
 
     @admin.display(description='счётчик избранного')
     def favorites_count(self, recipe):
-        return recipe.favorites.count()
+        return recipe.favorite.count()
 
 
 @register(Ingredient)

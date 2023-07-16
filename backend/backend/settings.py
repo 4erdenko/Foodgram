@@ -59,7 +59,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydatabase_two',
+        'NAME': 'mydatabase_three',
         'USER': 'postgres',
         'PASSWORD': 'uFB&kDZ*t#L^3J2q4kS4rnr*NRfR@q',
         'HOST': 'localhost',
@@ -118,7 +118,8 @@ DJOSER = {
         'current_user': 'users.serializers.CustomUserSerializer',
     },
     'PERMISSIONS': {
-        'user_list': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
+        'user_create': ['rest_framework.permissions.AllowAny'],
+        'user_list': ['rest_framework.permissions.AllowAny'],
         'user': ['rest_framework.permissions.IsAuthenticated'],
     },
 }

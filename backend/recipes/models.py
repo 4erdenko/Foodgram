@@ -66,7 +66,9 @@ class Recipe(models.Model):
         verbose_name='Автор',
     )
     name = models.CharField(
-        max_length=settings.MAX_RECIPE_NAME_LENGTH, verbose_name='Название'
+        max_length=settings.MAX_RECIPE_NAME_LENGTH,
+        verbose_name='Название',
+        unique=True,
     )
     image = models.ImageField(
         upload_to='recipes/',
@@ -166,6 +168,7 @@ class UserRelatedModel(models.Model):
                 fields=('user', 'recipe'), name='unique_%(class)s'
             )
         ]
+        default_related_name = '%(class)s'
 
     def __str__(self):
         return f'{self.user} добавил в {self._meta.verbose_name} {self.recipe}'
@@ -175,7 +178,6 @@ class Favorite(UserRelatedModel):
     class Meta(UserRelatedModel.Meta):
         verbose_name = 'избранное'
         verbose_name_plural = 'избранные'
-        default_related_name = 'favorites'
 
 
 # -------------------------------------------------------------------------- #
@@ -187,4 +189,3 @@ class ShoppingList(UserRelatedModel):
     class Meta(UserRelatedModel.Meta):
         verbose_name = 'Список покупок'
         verbose_name_plural = 'Списки покупок'
-        default_related_name = 'shopping_lists'

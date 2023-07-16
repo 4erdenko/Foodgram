@@ -5,8 +5,8 @@ from users.views import UserSubscribeView
 
 router = DefaultRouter()
 router.register('users', UserSubscribeView)
-router.register('users', UserSubscribeView, basename='subscriptions')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('', include('djoser.urls')),
 ]
