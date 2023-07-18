@@ -187,5 +187,5 @@ class Favorite(UserRelatedModel):
 
 class ShoppingList(UserRelatedModel):
     class Meta(UserRelatedModel.Meta):
-        verbose_name = 'Список покупок'
-        verbose_name_plural = 'Списки покупок'
+        verbose_name = 'список покупок'
+        verbose_name_plural = 'списки покупок'

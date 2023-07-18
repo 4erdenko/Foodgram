@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import status, viewsets
+from rest_framework import generics, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -8,21 +8,23 @@ from .models import Subscription, User
 from .serializers import SubscriptionSerializer, UserSubscriptionSerializer
 
 
+class SubscriptionsListView(generics.ListAPIView):
+    serializer_class = UserSubscriptionSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return [
+            subscription.following
+            for subscription in Subscription.objects.filter(
+                follower=self.request.user
+            )
+        ]
+
+
 class UserSubscribeView(viewsets.ModelViewSet):
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
     permission_classes = (IsAuthenticated,)
-
-    @action(detail=False, methods=['get'])
-    def subscriptions(self, request):
-        queryset = Subscription.objects.filter(follower=request.user)
-        page = self.paginate_queryset(queryset)
-        serializer = UserSubscriptionSerializer(
-            [subscription.following for subscription in page],
-            many=True,
-            context={'request': request},
-        )
-        return self.get_paginated_response(serializer.data)
 
     @action(detail=True, methods=['post'], url_path='subscribe')
     def subscribe(self, request, pk):
@@ -32,7 +34,13 @@ class UserSubscribeView(viewsets.ModelViewSet):
             context={'request': request},
         )
         serializer.is_valid(raise_exception=True)
-        user_data = serializer.save()
+        subscription = Subscription.objects.create(**serializer.validated_data)
+        user = subscription.following
+        context = {
+            'request': request,
+            'is_subscribed': True,
+        }
+        user_data = UserSubscriptionSerializer(user, context=context).data
         return Response(user_data, status=status.HTTP_201_CREATED)
 
     @subscribe.mapping.delete
