@@ -83,7 +83,7 @@ class RecipeSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     {
                         'ingredients': 'Количество ингредиента должно быть '
-                        'больше 0.'
+                                       'больше 0.'
                     }
                 )
 
@@ -161,7 +161,7 @@ class BaseSerializer(ModelSerializer):
             raise serializers.ValidationError(
                 {
                     'detail': f'Этот рецепт уже добавлен в'
-                    f' {self.Meta.model._meta.verbose_name}.'
+                              f' {self.Meta.model._meta.verbose_name}.'
                 }
             )
         return data
