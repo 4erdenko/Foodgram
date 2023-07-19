@@ -1,4 +1,6 @@
-<h1 align="center">Foodgram Project React</h1>
+<h1 align="center">Foodgram Project React <br>
+<img src="https://i.imgur.com/E0AsEow.png" align="center" height="350" />
+</h1>
 
 
 [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2F4erdenko%2Ffoodgram-project-react%2Fbadge&style=flat)](https://actions-badge.atrox.dev/4erdenko/foodgram-project-react/goto)
@@ -21,6 +23,8 @@ Foodgram Project React is a web platform where users can share their recipes, ad
   - [Prerequisites](#prerequisites)
   - [Steps](#steps)
 - [Usage](#usage)
+- [Documentation](#documentation)
+- [Data Import](#data-import)
 - [Contributing](#contributing)
 - [Credits](#credits)
 - [License](#license)
@@ -75,6 +79,38 @@ docker-compose up -d
 ## Usage
 
 To start using Foodgram Project React, create an account or log in using an existing one. You can then start creating, editing and deleting your recipes, as well as add other users' recipes to your favorites or to your shopping list.
+
+## Documentation
+
+The project includes documentation for the API endpoints. The documentation is automatically generated and can be accessed via the web interface.
+
+To run the documentation locally, ensure you have Docker and docker-compose installed, then follow the steps below:
+
+1. Navigate to the `infra` directory:
+
+```bash
+cd infra
+```
+
+2. Run the docker-compose file:
+
+```bash
+docker-compose up -d
+```
+
+This will start two containers: one for the frontend and another for the Nginx server. Nginx is configured to serve the frontend application and the documentation.
+
+3. Open your web browser and navigate to `http://localhost/api/docs`.
+
+You should now be able to see the documentation for the project's API.
+## Data Import
+
+To import ingredient data into your application, navigate to the root directory of your project and run the following command:
+
+```bash
+python manage.py import_ingredients path/to/ingredients.csv
+```
+Or make sure that the ingredients.csv file is in the same directory.
 
 ## Contributing
 
