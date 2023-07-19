@@ -1,7 +1,7 @@
 djangorestframework~=3.14.0
 Django~=4.2.2
 djoser~=2.2.0
-
+psycopg2-binary==2.9.3
 django-filter~=23.2
 reportlab~=4.0.4
 python-dotenv~=1.0.0
