@@ -1,4 +1,4 @@
-<h1 align="center">Foodgram Project React <br>
+<h1 align="center">Foodgram Project React <p>
 <img src="https://i.imgur.com/E0AsEow.png" align="center" height="350" />
 </h1>
 
