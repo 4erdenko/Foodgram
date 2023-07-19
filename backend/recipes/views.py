@@ -7,13 +7,6 @@ from django.db.models import Sum
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from recipes.filters import IngredientFilter, RecipeFilter
-from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
-                            ShoppingList, Tag)
-from recipes.permissions import IsAuthorOrStuffOrReadOnly
-from recipes.serializers import (FavoriteSerializer, IngredientSerializer,
-                                 RecipeSerializer, ShoppingListSerializer,
-                                 TagSerializer)
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -22,6 +15,14 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+
+from recipes.filters import IngredientFilter, RecipeFilter
+from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
+                            ShoppingList, Tag)
+from recipes.permissions import IsAuthorOrStuffOrReadOnly
+from recipes.serializers import (FavoriteSerializer, IngredientSerializer,
+                                 RecipeSerializer, ShoppingListSerializer,
+                                 TagSerializer)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
