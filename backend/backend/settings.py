@@ -13,7 +13,7 @@ DEBUG = bool(strtobool(os.getenv('DEBUG', 'False')))
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
-CSRF_TRUSTED_ORIGINS = os.getenv('CSRF')
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF', '')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
