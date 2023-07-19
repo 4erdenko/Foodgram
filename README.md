@@ -1,4 +1,5 @@
-# Foodgram Project React
+<h1 align="center">Foodgram Project React</h1>
+
 
 [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2F4erdenko%2Ffoodgram-project-react%2Fbadge&style=flat)](https://actions-badge.atrox.dev/4erdenko/foodgram-project-react/goto)
 [![Python](https://img.shields.io/badge/-Python-464646?style=flat-square&logo=Python)](https://www.python.org/)
