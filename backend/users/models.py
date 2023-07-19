@@ -1,6 +1,7 @@
-from backend import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+from backend import settings
 from users.validators import validate_username
 
 
