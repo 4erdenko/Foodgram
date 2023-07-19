@@ -1,14 +1,17 @@
+import os
+from distutils.util import strtobool
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-SECRET_KEY = (
-    'django-insecure-!ib8d!h8@wz(2j%g^#o(v-l#y$$ivu26i*md&1$%9$4xy31wb+'
-)
+DEBUG = bool(strtobool(os.getenv('DEBUG', 'False')))
 
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -59,11 +62,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydatabase_three',
-        'USER': 'postgres',
-        'PASSWORD': 'uFB&kDZ*t#L^3J2q4kS4rnr*NRfR@q',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('POSTGRES_DB', 'foodgram_db'),
+        'USER': os.getenv('POSTGRES_USER', 'foodgram_user'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'foodgram_password'),
+        'HOST': os.getenv('DB_HOST', 'db'),
+        'PORT': os.getenv('DB_PORT', 5432),
     }
 }
 
@@ -89,9 +92,9 @@ TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 
 USE_TZ = True
+STATIC_URL = '/static/'
+STATIC_ROOT = 'backend_static/static'
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 

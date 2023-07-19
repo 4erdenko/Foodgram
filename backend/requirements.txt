@@ -4,3 +4,5 @@ djoser~=2.2.0
 
 django-filter~=23.2
 reportlab~=4.0.4
+python-dotenv~=1.0.0
+gunicorn==20.1.0
