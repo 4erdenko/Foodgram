@@ -34,8 +34,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @staticmethod
     def generate_pdf(user):
         font_path = os.path.join(
-            settings.STATIC_ROOT, 'fonts', 'Roboto-Medium.ttf'
+            settings.BASE_DIR, 'static', 'fonts', 'Roboto-Medium.ttf'
         )
+
         pdfmetrics.registerFont(TTFont('Roboto-Medium', font_path))
 
         shopping_lists = ShoppingList.objects.filter(user=user)
