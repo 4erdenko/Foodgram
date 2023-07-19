@@ -9,6 +9,7 @@ urlpatterns = [
         'api/',
         include(
             [
+                path('auth/', include('djoser.urls.authtoken')),
                 path('', include('users.urls')),
                 path('', include('recipes.urls')),
             ]
