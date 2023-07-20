@@ -1,9 +1,13 @@
-<h1 align="center">Foodgram Project React <p>
-<img src="https://i.imgur.com/E0AsEow.png" align="center" height="350" />
+<h1 align="center">Foodgram Project React
+  
+  ---
+  
+<img src="https://i.imgur.com/E0AsEow.png" align="center" height="650" />
 </h1>
 
+---
 
-[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2F4erdenko%2Ffoodgram-project-react%2Fbadge&style=flat)](https://actions-badge.atrox.dev/4erdenko/foodgram-project-react/goto)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2F4erdenko%2Ffoodgram-project-react%2Fbadge&style=flat)](https://actions-badge.atrox.dev/4erdenko/foodgram-project-react/goto)  
 [![Python](https://img.shields.io/badge/-Python-464646?style=flat-square&logo=Python)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/-Django-464646?style=flat-square&logo=Django)](https://www.djangoproject.com/)
 [![Django REST Framework](https://img.shields.io/badge/-Django%20REST%20Framework-464646?style=flat-square&logo=Django%20REST%20Framework)](https://www.django-rest-framework.org/)
