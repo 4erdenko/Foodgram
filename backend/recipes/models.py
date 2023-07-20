@@ -171,63 +171,56 @@ class RecipeIngredient(models.Model):
         )
 
 
-class Favorite(models.Model):
+class UserRelatedModel(models.Model):
+    """
+    Abstract base model representing a user-related model.
+
+    Attributes:
+        user (User): The user associated with the model instance.
+        recipe (Recipe): The related recipe instance.
+    """
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+    )
+
+    class Meta:
+        abstract = True
+        constraints = [
+            models.UniqueConstraint(
+                fields=('user', 'recipe'), name='unique_%(class)s'
+            )
+        ]
+        default_related_name = '%(class)s'
+
+    def __str__(self):
+        return f'{self.user} добавил в {self._meta.verbose_name} {self.recipe}'
+
+
+class Favorite(UserRelatedModel):
     """
     Model representing a user's favorite recipe.
 
-    Attributes:
-        user (User): The user who favorited the recipe.
-        recipe (Recipe): The favorited recipe.
+    Inherits from UserRelatedModel.
     """
 
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-    )
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-    )
-
-    class Meta:
+    class Meta(UserRelatedModel.Meta):
         verbose_name = 'избранное'
         verbose_name_plural = 'избранные'
-        constraints = [
-            models.UniqueConstraint(
-                fields=('user', 'recipe'), name='unique_favorite'
-            )
-        ]
-
-    def __str__(self):
-        return f'{self.user} добавил в избранное {self.recipe}'
 
 
-class ShoppingList(models.Model):
+class ShoppingList(UserRelatedModel):
     """
     Model representing a user's shopping list.
 
-    Attributes:
-        user (User): The user who added the recipe to the shopping list.
-        recipe (Recipe): The recipe added to the shopping list.
+    Inherits from UserRelatedModel.
     """
 
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-    )
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-    )
-
-    class Meta:
+    class Meta(UserRelatedModel.Meta):
         verbose_name = 'список покупок'
         verbose_name_plural = 'списки покупок'
-        constraints = [
-            models.UniqueConstraint(
-                fields=('user', 'recipe'), name='unique_shoppinglist'
-            )
-        ]
-
-    def __str__(self):
-        return f'{self.user} добавил в список покупок {self.recipe}'

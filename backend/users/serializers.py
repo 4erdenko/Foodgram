@@ -56,7 +56,7 @@ class UserSubscriptionSerializer(CustomUserSerializer):
         limit = self.context['request'].query_params.get('limit')
         recipes = obj.recipes.all()
         if limit:
-            recipes = recipes[: int(limit)]
+            recipes = recipes[:int(limit)]
 
         return ShortRecipeSerializer(
             recipes, many=True, context=self.context
