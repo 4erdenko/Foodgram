@@ -10,7 +10,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from recipes.filters import IngredientFilter, RecipeFilter
 from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
                             ShoppingList, Tag)
-from recipes.permissions import IsAuthorOrStuffOrReadOnly
+from recipes.permissions import IsAuthorOrStaffOrReadOnly
 from recipes.serializers import (FavoriteSerializer, IngredientSerializer,
                                  RecipeSerializer, ShoppingListSerializer,
                                  TagSerializer)
@@ -38,7 +38,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     """
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    permission_classes = (IsAuthorOrStuffOrReadOnly, IsAuthenticatedOrReadOnly)
+    permission_classes = (IsAuthorOrStaffOrReadOnly, IsAuthenticatedOrReadOnly)
     filterset_class = RecipeFilter
     filter_backends = (DjangoFilterBackend,)
 
