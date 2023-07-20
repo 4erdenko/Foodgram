@@ -6,6 +6,24 @@ from backend import settings
 
 
 class User(AbstractUser):
+    """
+    Custom user model representing a user of the application.
+
+    Inherits from Django's AbstractUser model and adds additional fields.
+
+    Attributes:
+        email (EmailField): The email address of the user. Unique.
+        username (CharField): The username of the user. Unique.
+        first_name (CharField): The first name of the user.
+        last_name (CharField): The last name of the user.
+        password (CharField): The password of the user.
+
+    Meta:
+        verbose_name (str): The human-readable name for the model.
+        verbose_name_plural (str): The plural form of the model's name.
+        ordering (tuple): The default ordering for the model's records.
+    """
+
     email = models.EmailField(
         verbose_name='Электронная почта',
         unique=True,
@@ -39,6 +57,20 @@ class User(AbstractUser):
 
 
 class Subscription(models.Model):
+    """
+    Model representing a subscription between users.
+
+    Attributes:
+        follower (ForeignKey): The user who is following another user.
+        following (ForeignKey): The user being followed by another user.
+
+    Meta:
+        constraints (tuple): The model's constraints, including uniqueness
+        and check constraints.
+        verbose_name (str): The human-readable name for the model.
+        verbose_name_plural (str): The plural form of the model's name.
+    """
+
     follower = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

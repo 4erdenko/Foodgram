@@ -56,7 +56,7 @@ class UserSubscriptionSerializer(CustomUserSerializer):
         limit = self.context['request'].query_params.get('limit')
         recipes = obj.recipes.all()
         if limit:
-            recipes = recipes[:int(limit)]
+            recipes = recipes[: int(limit)]
 
         return ShortRecipeSerializer(
             recipes, many=True, context=self.context
@@ -82,7 +82,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
                 {'detail': 'Вы не можете подписаться на самого себя.'}
             )
         if Subscription.objects.filter(
-                follower=follower, following=following
+            follower=follower, following=following
         ).exists():
             raise serializers.ValidationError(
                 {'detail': 'Вы уже подписаны на этого пользователя.'}

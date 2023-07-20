@@ -23,6 +23,7 @@ Foodgram Project React is a web platform where users can share their recipes, ad
   - [Prerequisites](#prerequisites)
   - [Steps](#steps)
 - [Usage](#usage)
+- [Configuration](#configuration)
 - [Documentation](#documentation)
 - [Data Import](#data-import)
 - [Contributing](#contributing)
@@ -79,7 +80,41 @@ docker-compose up -d
 ## Usage
 
 To start using Foodgram Project React, create an account or log in using an existing one. You can then start creating, editing and deleting your recipes, as well as add other users' recipes to your favorites or to your shopping list.
+## Configuration
 
+The project uses environment variables for configuration. These variables are set in a file named `.env` which you'll need to create in the project root.
+
+An example `.env` file, named `.env.EXAMPLE`, is included in the repository. This file lists all the environment variables used in the project with dummy values. Here's what the file contains:
+
+```
+POSTGRES_DB=kittygram
+POSTGRES_USER=kittygram_user
+POSTGRES_PASSWORD=kittygram_password
+DB_HOST=db
+DB_PORT=5432
+
+SECRET_KEY='key'
+DEBUG=False
+ALLOWED_HOSTS=yourwebsite.com,111.222.333.444,127.0.0.1,localhost
+CSRF=https://yourwebsite.com,https://111.222.333.444,127,http://127.0.0.1,http://localhost
+```
+
+To configure your application, make a new file named `.env` and copy the contents of `.env.EXAMPLE` into it. Then replace the dummy values with your actual data.
+
+Here's what each of the environment variables is used for:
+
+- `POSTGRES_DB`: The name of your PostgreSQL database.
+- `POSTGRES_USER`: The username of your PostgreSQL user.
+- `POSTGRES_PASSWORD`: The password for your PostgreSQL user.
+- `DB_HOST`: The hostname where your PostgreSQL database is hosted.
+- `DB_PORT`: The port number on which your PostgreSQL service is running.
+
+- `SECRET_KEY`: A secret key for Django.
+- `DEBUG`: A boolean flag that turns on/off debug mode in Django.
+- `ALLOWED_HOSTS`: A comma-separated list of strings representing the host/domain names that this Django site can serve.
+- `CSRF`: The list of trusted origins for CSRF. If not provided, Django will use `ALLOWED_HOSTS`.
+
+**Note:** Remember to set `DEBUG` as `False` when you're running in a production environment. Also, make sure to use a strong, unpredictable secret key.
 ## Documentation
 
 The project includes documentation for the API endpoints. The documentation is automatically generated and can be accessed via the web interface.

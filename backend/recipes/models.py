@@ -3,10 +3,15 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
-# -------------------------------------------------------------------------- #
-# ---------------------------  Ingredient  --------------------------------- #
-# -------------------------------------------------------------------------- #
 class Ingredient(models.Model):
+    """
+    Model representing an ingredient.
+
+    Attributes:
+        name (str): The name of the ingredient.
+        measurement_unit (str): The unit of measurement for the ingredient.
+    """
+
     name = models.CharField(
         max_length=settings.MAX_INGREDIENT_NAME_LENGTH,
         verbose_name='Название',
@@ -30,12 +35,16 @@ class Ingredient(models.Model):
         return f'{self.name} ({self.measurement_unit})'
 
 
-# -------------------------------------------------------------------------- #
-# ----------------------------      Tag    --------------------------------- #
-# -------------------------------------------------------------------------- #
-
-
 class Tag(models.Model):
+    """
+    Model representing a tag.
+
+    Attributes:
+        name (str): The name of the tag.
+        color (str): The color of the tag.
+        slug (str): The slug address of the tag.
+    """
+
     name = models.CharField(
         max_length=settings.MAX_TAG_NAME_LENGTH,
         unique=True,
@@ -54,12 +63,20 @@ class Tag(models.Model):
         return self.name
 
 
-# -------------------------------------------------------------------------- #
-# ---------------------------  Recipes part  ------------------------------- #
-# -------------------------------------------------------------------------- #
-
-
 class Recipe(models.Model):
+    """
+    Model representing a recipe.
+
+    Attributes:
+        author (User): The author of the recipe.
+        name (str): The name of the recipe.
+        image (ImageField): The image of the recipe.
+        text (str): The description of the recipe.
+        ingredients (ManyToManyField): The ingredients used in the recipe.
+        tags (ManyToManyField): The tags associated with the recipe.
+        cooking_time (int): The cooking time of the recipe in minutes.
+    """
+
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -74,7 +91,6 @@ class Recipe(models.Model):
         upload_to='recipes/',
         verbose_name='Изображение',
     )
-
     text = models.TextField(verbose_name='Описание')
     ingredients = models.ManyToManyField(
         Ingredient,
@@ -109,6 +125,15 @@ class Recipe(models.Model):
 
 
 class RecipeIngredient(models.Model):
+    """
+    Model representing an ingredient used in a recipe.
+
+    Attributes:
+        recipe (Recipe): The recipe the ingredient is used in.
+        ingredient (Ingredient): The ingredient.
+        amount (int): The amount of the ingredient used in the recipe.
+    """
+
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -146,12 +171,15 @@ class RecipeIngredient(models.Model):
         )
 
 
-# -------------------------------------------------------------------------- #
-# ------------------------  UserRelatedModel  ------------------------------ #
-# -------------------------------------------------------------------------- #
+class Favorite(models.Model):
+    """
+    Model representing a user's favorite recipe.
 
+    Attributes:
+        user (User): The user who favorited the recipe.
+        recipe (Recipe): The favorited recipe.
+    """
 
-class UserRelatedModel(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -162,30 +190,44 @@ class UserRelatedModel(models.Model):
     )
 
     class Meta:
-        abstract = True
-        constraints = [
-            models.UniqueConstraint(
-                fields=('user', 'recipe'), name='unique_%(class)s'
-            )
-        ]
-        default_related_name = '%(class)s'
-
-    def __str__(self):
-        return f'{self.user} добавил в {self._meta.verbose_name} {self.recipe}'
-
-
-class Favorite(UserRelatedModel):
-    class Meta(UserRelatedModel.Meta):
         verbose_name = 'избранное'
         verbose_name_plural = 'избранные'
+        constraints = [
+            models.UniqueConstraint(
+                fields=('user', 'recipe'), name='unique_favorite'
+            )
+        ]
+
+    def __str__(self):
+        return f'{self.user} добавил в избранное {self.recipe}'
 
 
-# -------------------------------------------------------------------------- #
-# ------------------------  ShoppingList  ---------------------------------- #
-# -------------------------------------------------------------------------- #
+class ShoppingList(models.Model):
+    """
+    Model representing a user's shopping list.
 
+    Attributes:
+        user (User): The user who added the recipe to the shopping list.
+        recipe (Recipe): The recipe added to the shopping list.
+    """
 
-class ShoppingList(UserRelatedModel):
-    class Meta(UserRelatedModel.Meta):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+    )
+
+    class Meta:
         verbose_name = 'список покупок'
         verbose_name_plural = 'списки покупок'
+        constraints = [
+            models.UniqueConstraint(
+                fields=('user', 'recipe'), name='unique_shoppinglist'
+            )
+        ]
+
+    def __str__(self):
+        return f'{self.user} добавил в список покупок {self.recipe}'
