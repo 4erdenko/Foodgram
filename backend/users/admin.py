@@ -14,6 +14,15 @@ class UserAdmin(admin.ModelAdmin):
         list_filter (tuple): The fields to use for filtering in the admin
         interface.
     """
+    def save_model(self, request, obj, form, change):
+        if obj.pk:
+            orig_obj = User.objects.get(pk=obj.pk)
+            if obj.password != orig_obj.password:
+                obj.set_password(obj.password)
+        else:
+            obj.set_password(obj.password)
+
+        obj.save()
     list_display = (
         'id',
         'is_active',
