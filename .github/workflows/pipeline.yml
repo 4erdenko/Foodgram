@@ -61,6 +61,7 @@ jobs:
           username: ${{ env.DOCKER_USERNAME }}
           password: ${{ env.DOCKER_PASSWORD }}
       - name: Build and push Docker image
+        if: matrix.python-version == '3.11'
         uses: docker/build-push-action@v3
         with:
           context: ./backend/
@@ -68,6 +69,7 @@ jobs:
           tags: 4erdenko/foodgram_backend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
 
   build_frontend_and_push_to_docker_hub:
     name: Push frontend Docker image to DockerHub
@@ -118,6 +120,12 @@ jobs:
             echo "Waiting for Docker containers to become healthy..."
             sudo docker wait $(sudo docker ps -q)
 
+  notify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
       - name: Send deployment notification
         uses: appleboy/telegram-action@master
         if: ${{ success() }}
@@ -129,7 +137,6 @@ jobs:
             By: @${{ github.actor }}
             
             [View on GitHub](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-
         with:
            token: ${{ secrets.TELEGRAM_TOKEN }}
            to: ${{ secrets.TELEGRAM_TO }}
