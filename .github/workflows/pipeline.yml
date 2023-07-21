@@ -109,7 +109,7 @@ jobs:
           passphrase: ${{ env.SSH_PASSPHRASE }}
       - name: Pull down existing stack
         run: |
-          cd foodgram
+          cd /home/${{ env.USER }}/foodgram
           sudo docker compose -f docker-compose.production.yml down
       - name: Clean up Docker system
         run: sudo docker system prune -f
