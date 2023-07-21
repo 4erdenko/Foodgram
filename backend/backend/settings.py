@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 load_dotenv(dotenv_path)
-SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = bool(strtobool(os.getenv('DEBUG', 'False')))
 
@@ -150,3 +149,21 @@ MIN_COOKING_TIME = 1
 MAX_COOKING_TIME = 20161
 MIN_AMOUNT = 1
 MAX_AMOUNT = 10000
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': './debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
