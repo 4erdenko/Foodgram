@@ -61,7 +61,7 @@ jobs:
           username: ${{ env.DOCKER_USERNAME }}
           password: ${{ env.DOCKER_PASSWORD }}
       - name: Build and push Docker image
-        if: matrix.python-version == '3.11'
+        if: matrix.python-version == '3.9'
         uses: docker/build-push-action@v3
         with:
           context: ./backend/
@@ -100,25 +100,36 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      - name: Deploying
+      - name: Setup SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ env.HOST }}
           username: ${{ env.USER }}
           key: ${{ env.SSH_KEY }}
           passphrase: ${{ env.SSH_PASSPHRASE }}
-          script: |
-            cd foodgram
-            sudo docker compose -f docker-compose.production.yml down
-            sudo docker system prune -f
-            sudo docker compose -f docker-compose.production.yml pull
-            sudo docker compose -f docker-compose.production.yml up -d
-            sudo docker compose -f docker-compose.production.yml exec backend python manage.py makemigrations
-            sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
-            sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic --no-input
-            sudo docker image prune -a -f
-            echo "Waiting for Docker containers to become healthy..."
-            sudo docker wait $(sudo docker ps -q)
+      - name: Pull down existing stack
+        run: |
+          cd foodgram
+          sudo docker compose -f docker-compose.production.yml down
+      - name: Clean up Docker system
+        run: sudo docker system prune -f
+      - name: Pull latest images
+        run: sudo docker compose -f docker-compose.production.yml pull
+      - name: Start up the stack
+        run: sudo docker compose -f docker-compose.production.yml up -d
+      - name: Run migrations
+        run: |
+          sudo docker compose -f docker-compose.production.yml exec backend python manage.py makemigrations
+          sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+      - name: Collect static files
+        run: sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic --no-input
+      - name: Prune Docker images
+        run: sudo docker image prune -a -f
+      - name: Wait for Docker containers
+        run: |
+          echo "Waiting for Docker containers to become healthy..."
+          sudo docker wait $(sudo docker ps -q)
+
 
   notify:
     needs: deploy
