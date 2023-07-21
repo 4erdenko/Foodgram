@@ -97,7 +97,7 @@ jobs:
   Deployment:
     runs-on: ubuntu-latest
     needs:
-      - backend_tests_and_build_and_push_to_docker_hub
+      - build_frontend_and_push_to_docker_hub
     steps:
       - name: Create .env file and fill it with Github secrets
         uses: appleboy/ssh-action@master
