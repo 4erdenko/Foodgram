@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.mixins import DestroyModelMixin
 from rest_framework.response import Response
 
-from .models import Subscription, User
+from .models import Subscription
 from .serializers import SubscriptionSerializer, UserSubscriptionSerializer
 
 
