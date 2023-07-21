@@ -2,13 +2,14 @@ from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.mixins import DestroyModelMixin
 from rest_framework.response import Response
 
 from .models import Subscription, User
 from .serializers import SubscriptionSerializer, UserSubscriptionSerializer
 
 
-class UserSubscribeView(UserViewSet):
+class UserSubscribeView(UserViewSet, DestroyModelMixin):
     """
     Custom view for user subscriptions.
 
@@ -67,7 +68,7 @@ class UserSubscribeView(UserViewSet):
         return Response(user_data, status=status.HTTP_201_CREATED)
 
     @subscribe.mapping.delete
-    def unsubscribe(self, request, id=None):
+    def unsubscribe(self, request, id):
         """
         Unsubscribe from a user.
 
@@ -75,19 +76,19 @@ class UserSubscribeView(UserViewSet):
         and the specified user.
 
         Args:
-            request (Request): The HTTP request object.
-            id (int): The ID of the user to unsubscribe from.
+        request (Request): The HTTP request object.
+        id (int): The ID of the user to unsubscribe from.
 
         Returns:
-            Response: Success message indicating that the user has
-            been unsubscribed.
+        Response: Success message indicating that the user has
+        been unsubscribed.
         """
-        following = get_object_or_404(User, id=id)
-        follower = self.request.user
         subscription = get_object_or_404(
-            Subscription, follower=follower, following=following
+            Subscription,
+            follower=request.user,
+            following__id=id
         )
-        subscription.delete()
+        self.perform_destroy(subscription)
         return Response(
             {'detail': 'Вы отписались от автора.'},
             status=status.HTTP_204_NO_CONTENT,
