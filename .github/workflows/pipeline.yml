@@ -119,6 +119,7 @@ jobs:
             sudo docker wait $(sudo docker ps -q)
 
       - name: Send deployment notification
+        uses: appleboy/telegram-action@master
         if: ${{ success() }}
         env:
           TELEGRAM_MESSAGE: |
@@ -129,7 +130,6 @@ jobs:
             
             [View on GitHub](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
-      - uses: appleboy/telegram-action@master
         with:
            token: ${{ secrets.TELEGRAM_TOKEN }}
            to: ${{ secrets.TELEGRAM_TO }}
