@@ -59,6 +59,7 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 
 
 class RecipeSerializer(serializers.ModelSerializer):
+
     """
     Serializer for the Recipe model.
 
@@ -120,7 +121,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             user=request.user, recipe=obj
         ).exists()
 
-    def validate_ingredients(self, data):
+    def validate(self, data):
         """
         Validate the ingredients field.
 
