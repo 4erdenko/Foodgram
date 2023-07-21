@@ -16,7 +16,7 @@ env:
 
 jobs:
 
-  backend_tests_and_build:
+  backend_tests_and_build_and_push_to_docker_hub:
     runs-on: ubuntu-latest
     strategy:
       matrix:
