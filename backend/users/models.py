@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from users.validators import validate_username
+from users.validators import validate_password, validate_username
 
 
 class User(AbstractUser):
@@ -28,7 +28,7 @@ class User(AbstractUser):
         unique=True,
     )
     username = models.CharField(
-        verbose_name='Пользователи',
+        verbose_name='Пользователь',
         unique=True,
         max_length=settings.MAX_USERNAME_LENGTH,
         validators=(validate_username,),
@@ -44,6 +44,7 @@ class User(AbstractUser):
     password = models.CharField(
         verbose_name='Пароль',
         max_length=settings.MAX_PASSWORD_NAME_LENGTH,
+        validators=(validate_password,)
     )
 
     class Meta:
