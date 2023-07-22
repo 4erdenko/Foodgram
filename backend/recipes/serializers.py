@@ -313,10 +313,8 @@ class BaseSerializer(ModelSerializer):
         recipe = data.get('recipe')
         if self.Meta.model.objects.filter(user=user, recipe=recipe).exists():
             raise serializers.ValidationError(
-                {
-                    'detail': f'Этот рецепт уже добавлен в '
-                    f'{self.Meta.model._meta.verbose_name}.'
-                }
+                f'Этот рецепт уже добавлен в '
+                f'{self.Meta.model._meta.verbose_name}.'
             )
         return data
 
