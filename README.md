@@ -77,7 +77,8 @@ cd foodgram-project-react
 4. Run docker-compose to build and start the containers:
 
 ```bash
-docker-compose up -d
+cd infra
+docker compose up -d
 ```
 
 5. The application will be accessible at `http://localhost` (or whatever your Docker host address is).
@@ -126,16 +127,16 @@ The project includes documentation for the API endpoints. The documentation is a
 
 To run the documentation locally, ensure you have Docker and docker-compose installed, then follow the steps below:
 
-1. Navigate to the `infra` directory:
+1. Navigate to the `infra/api` directory:
 
 ```bash
-cd infra
+cd infra/api
 ```
 
 2. Run the docker-compose file:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 This will start two containers: one for the frontend and another for the Nginx server. Nginx is configured to serve the frontend application and the documentation.
