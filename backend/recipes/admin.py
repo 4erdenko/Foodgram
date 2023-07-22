@@ -15,6 +15,7 @@ class RecipeIngredientInline(admin.TabularInline):
         model (Model): The model class for RecipeIngredient.
         extra (int): The number of extra inline forms to display.
     """
+
     model = RecipeIngredient
     extra = 1
 
@@ -31,6 +32,7 @@ class RecipeAdmin(admin.ModelAdmin):
         admin interface.
         inlines (list): The inline models to include.
     """
+
     list_display = ('id', 'name', 'author', 'cooking_time', 'favorites_count')
     search_fields = ('name', 'author')
     list_filter = ('author', 'name')
@@ -61,6 +63,7 @@ class IngredientAdmin(admin.ModelAdmin):
         list_filter (tuple): The fields to use for filtering in the
         admin interface.
     """
+
     list_display = ('id', 'name', 'measurement_unit')
     search_fields = ('name',)
     list_filter = ('name',)
@@ -77,6 +80,7 @@ class TagAdmin(admin.ModelAdmin):
         list_filter (tuple): The fields to use for filtering in the
         admin interface.
     """
+
     list_display = ('id', 'name', 'color', 'slug')
     search_fields = ('name',)
     list_filter = ('name',)
@@ -93,6 +97,7 @@ class RecipeIngredientAdmin(admin.ModelAdmin):
         list_filter (tuple): The fields to use for filtering in the
         admin interface.
     """
+
     list_display = ('id', 'recipe', 'ingredient', 'amount')
     search_fields = ('recipe', 'ingredient')
     list_filter = ('recipe', 'ingredient')

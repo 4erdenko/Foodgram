@@ -14,6 +14,7 @@ class UserAdmin(admin.ModelAdmin):
         list_filter (tuple): The fields to use for filtering in the admin
         interface.
     """
+
     def save_model(self, request, obj, form, change):
         if obj.pk:
             orig_obj = User.objects.get(pk=obj.pk)
@@ -23,6 +24,7 @@ class UserAdmin(admin.ModelAdmin):
             obj.set_password(obj.password)
 
         obj.save()
+
     list_display = (
         'id',
         'is_active',
@@ -49,6 +51,7 @@ class SubscriptionAdmin(admin.ModelAdmin):
         interface.
         empty_value_display (str): The display value for empty fields.
     """
+
     list_display = ('follower', 'following')
     search_fields = ('follower', 'following')
     list_filter = ('follower', 'following')

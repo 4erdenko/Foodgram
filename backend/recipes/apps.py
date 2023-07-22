@@ -9,5 +9,6 @@ class RecipesConfig(AppConfig):
         name (str): The name of the app.
         verbose_name (str): The human-readable name for the app.
     """
+
     name = 'recipes'
     verbose_name = 'Рецепты'

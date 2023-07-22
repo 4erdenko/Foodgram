@@ -48,6 +48,7 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
         measurement_unit (str): The measurement unit of the ingredient.
         amount (float): The amount of the ingredient.
     """
+
     name = serializers.CharField(source='ingredient.name', read_only=True)
     measurement_unit = serializers.CharField(
         source='ingredient.measurement_unit', read_only=True
@@ -76,6 +77,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         text (str): The text of the recipe.
         cooking_time (int): The cooking time of the recipe.
     """
+
     author = CustomUserSerializer(read_only=True)
     image = Base64ImageField(max_length=None, use_url=True)
     is_favorited = serializers.SerializerMethodField()
@@ -84,8 +86,16 @@ class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = (
-            'id', 'tags', 'author', 'ingredients', 'is_favorited',
-            'is_in_shopping_cart', 'name', 'image', 'text', 'cooking_time',
+            'id',
+            'tags',
+            'author',
+            'ingredients',
+            'is_favorited',
+            'is_in_shopping_cart',
+            'name',
+            'image',
+            'text',
+            'cooking_time',
         )
 
     def get_is_favorited(self, obj):
@@ -139,7 +149,8 @@ class RecipeSerializer(serializers.ModelSerializer):
         ingredient_ids = [ingredient['id'] for ingredient in ingredients]
         if not ingredients:
             raise serializers.ValidationError(
-                'Необходимо добавить ингредиенты.')
+                'Необходимо добавить ингредиенты.'
+            )
         if len(ingredient_ids) != len(set(ingredient_ids)):
             raise serializers.ValidationError(
                 'Ингредиенты не должны повторяться.'
@@ -149,8 +160,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             amount = int(ingredient['amount'])
             if amount <= 0:
                 raise serializers.ValidationError(
-                    'Количество ингредиента '
-                    'должно быть больше 0.'
+                    'Количество ингредиента ' 'должно быть больше 0.'
                 )
 
         return data
@@ -260,6 +270,7 @@ class ShortRecipeSerializer(serializers.ModelSerializer):
         image (str): The URL of the recipe image.
         cooking_time (int): The cooking time of the recipe.
     """
+
     image = serializers.ImageField(use_url=True)
 
     class Meta:
@@ -304,7 +315,7 @@ class BaseSerializer(ModelSerializer):
             raise serializers.ValidationError(
                 {
                     'detail': f'Этот рецепт уже добавлен в '
-                              f'{self.Meta.model._meta.verbose_name}.'
+                    f'{self.Meta.model._meta.verbose_name}.'
                 }
             )
         return data
