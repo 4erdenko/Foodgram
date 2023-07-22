@@ -5,7 +5,6 @@ from io import BytesIO
 from django.conf import settings
 from django.db.models import Sum
 from django.http import FileResponse
-from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from recipes.filters import IngredientFilter, RecipeFilter
 from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
@@ -18,24 +17,39 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
-from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
+from users.views import CreateDeleteMixin
 
 
-class RecipeViewSet(viewsets.ModelViewSet):
+class RecipeViewSet(CreateDeleteMixin, ModelViewSet):
     """
     API endpoint that allows recipes to be viewed, created,
     updated, and deleted.
 
+    This class also provides additional actions related to user's favorites
+    and
+    shopping cart.
+
+    Inherits:
+        CreateDeleteMixin: provides "create_item" and "delete_item" methods
+        for
+        handling 'favorite' and 'add_to_cart' actions.
+        ModelViewSet: Django Rest Framework's ModelViewSet for basic CRUD
+        operations.
+
     Attributes:
         queryset (QuerySet): The queryset of Recipe objects.
-        serializer_class (Serializer): The serializer class for Recipe objects.
-        permission_classes (tuple): The permission classes applied to the view.
-        filterset_class (FilterSet): The filterset class for Recipe filtering.
+        serializer_class (Serializer): The serializer class for Recipe
+        objects.
+        permission_classes (tuple): The permission classes applied to the
+        view.
+        filterset_class (FilterSet): The filterset class for Recipe
+        filtering.
         filter_backends (tuple): The filter backends applied to the view.
     """
+
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes = (IsAuthorOrStaffOrReadOnly, IsAuthenticatedOrReadOnly)
@@ -84,44 +98,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
         buffer.seek(0)
         return buffer
 
-    @staticmethod
-    def create_item(serializer_class, data, request):
-        """
-        Create an item using the specified serializer.
-
-        Args:
-            serializer_class (Serializer): The serializer class.
-            data (dict): The data to be serialized.
-            request (HttpRequest): The HTTP request.
-
-        Returns:
-            Response: The HTTP response.
-        """
-        serializer = serializer_class(data=data, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(status=status.HTTP_201_CREATED)
-
-    @staticmethod
-    def delete_item(model, user, pk):
-        """
-        Delete an item with the specified model, user, and primary key.
-
-        Args:
-            model (Model): The model class.
-            user (User): The user object.
-            pk (int): The primary key of the item to be deleted.
-
-        Returns:
-            Response: The HTTP response.
-        """
-        get_object_or_404(model, user=user, recipe=pk).delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
     @action(detail=True, methods=['post'])
     def favorite(self, request, pk):
         """
         Add a recipe to the user's favorites.
+
+        This action uses "create_item" method from
+        CreateDeleteMixin to create
+        new Favorite instance.
 
         Args:
             request (HttpRequest): The HTTP request.
@@ -138,6 +122,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """
         Remove a recipe from the user's favorites.
 
+        This action uses "delete_item" method from CreateDeleteMixin to delete
+        the Favorite instance.
+
         Args:
             request (HttpRequest): The HTTP request.
             pk (int): The primary key of the recipe.
@@ -145,7 +132,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         Returns:
             Response: The HTTP response.
         """
-        return self.delete_item(Favorite, self.request.user, pk)
+        return self.delete_item(Favorite, user=request.user, recipe=pk)
 
     @action(detail=False, methods=['get'], url_path='download_shopping_cart')
     def download_shopping_cart(self, request):
@@ -172,6 +159,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """
         Add a recipe to the user's shopping cart.
 
+        This action uses "create_item" method from CreateDeleteMixin to create
+        new ShoppingList instance.
+
         Args:
             request (HttpRequest): The HTTP request.
             pk (int): The primary key of the recipe.
@@ -187,6 +177,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """
         Remove a recipe from the user's shopping cart.
 
+        This action uses "delete_item" method from CreateDeleteMixin to delete
+        the ShoppingList instance.
+
         Args:
             request (HttpRequest): The HTTP request.
             pk (int): The primary key of the recipe.
@@ -194,10 +187,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
         Returns:
             Response: The HTTP response.
         """
-        return self.delete_item(ShoppingList, request.user.id, pk)
+        return self.delete_item(ShoppingList, user=request.user, recipe=pk)
 
 
-class IngredientViewSet(viewsets.ModelViewSet):
+class IngredientViewSet(ModelViewSet):
     """
     API endpoint that allows ingredients to be viewed, created,
     updated, and deleted.
@@ -210,13 +203,14 @@ class IngredientViewSet(viewsets.ModelViewSet):
         for Ingredient filtering.
         pagination_class (None): The pagination class for the view.
     """
+
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     filterset_class = IngredientFilter
     pagination_class = None
 
 
-class TagViewSet(viewsets.ModelViewSet):
+class TagViewSet(ModelViewSet):
     """
     API endpoint that allows tags to be viewed, created, updated, and deleted.
 
@@ -225,6 +219,7 @@ class TagViewSet(viewsets.ModelViewSet):
         serializer_class (Serializer): The serializer class for Tag objects.
         pagination_class (None): The pagination class for the view.
     """
+
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     pagination_class = None

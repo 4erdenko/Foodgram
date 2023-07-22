@@ -2,14 +2,54 @@ from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.mixins import DestroyModelMixin
 from rest_framework.response import Response
 
 from .models import Subscription
 from .serializers import SubscriptionSerializer, UserSubscriptionSerializer
 
 
-class UserSubscribeView(UserViewSet, DestroyModelMixin):
+class CreateDeleteMixin:
+    """
+    A mixin class that provides `create_item` and `delete_item` methods.
+    These methods are used to create and delete instances of specified models.
+    """
+
+    def create_item(self, serializer_class, data, request):
+        """
+        Creates an instance of a specified model using the given serializer
+        class and data.
+
+        Args:
+            serializer_class (Serializer): The serializer class to be used.
+            data (dict): The data to be passed to the serializer.
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: Response with a status of 201 (created).
+        """
+        serializer = serializer_class(data=data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_201_CREATED)
+
+    def delete_item(self, model, **kwargs):
+        """
+        Deletes an instance of a specified model given its
+        identifying attributes.
+
+        Args:
+            model (Model): The Django model class.
+            **kwargs: The attributes identifying the model
+            instance to be deleted.
+
+        Returns:
+            Response: Response with a status of 204 (no content).
+        """
+        get_object_or_404(model, **kwargs).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class UserSubscribeView(CreateDeleteMixin, UserViewSet):
     """
     Custom view for user subscriptions.
 
@@ -53,19 +93,7 @@ class UserSubscribeView(UserViewSet, DestroyModelMixin):
             Response: The serialized data of the subscribed user.
         """
         data = {'follower': self.request.user.id, 'following': id}
-        serializer = SubscriptionSerializer(
-            data=data,
-            context={'request': request},
-        )
-        serializer.is_valid(raise_exception=True)
-        subscription = serializer.save()
-        user = subscription.following
-        context = {
-            'request': request,
-            'is_subscribed': True,
-        }
-        user_data = UserSubscriptionSerializer(user, context=context).data
-        return Response(user_data, status=status.HTTP_201_CREATED)
+        return self.create_item(SubscriptionSerializer, data, request)
 
     @subscribe.mapping.delete
     def unsubscribe(self, request, id):
@@ -83,13 +111,6 @@ class UserSubscribeView(UserViewSet, DestroyModelMixin):
         Response: Success message indicating that the user has
         been unsubscribed.
         """
-        subscription = get_object_or_404(
-            Subscription,
-            follower=request.user,
-            following__id=id
-        )
-        self.perform_destroy(subscription)
-        return Response(
-            {'detail': 'Вы отписались от автора.'},
-            status=status.HTTP_204_NO_CONTENT,
+        return self.delete_item(
+            Subscription, follower=request.user, following__id=id
         )
