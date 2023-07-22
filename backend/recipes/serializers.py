@@ -139,7 +139,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         ingredient_ids = [ingredient['id'] for ingredient in ingredients]
         if not ingredients:
             raise serializers.ValidationError(
-                {'ingredients': 'Необходимо добавить ингредиенты.'})
+                'Необходимо добавить ингредиенты.')
         if len(ingredient_ids) != len(set(ingredient_ids)):
             raise serializers.ValidationError(
                 'Ингредиенты не должны повторяться.'
@@ -149,9 +149,8 @@ class RecipeSerializer(serializers.ModelSerializer):
             amount = int(ingredient['amount'])
             if amount <= 0:
                 raise serializers.ValidationError(
-                    {
-                        'ingredients': 'Количество ингредиента '
-                                       'должно быть больше 0.'}
+                    'Количество ингредиента '
+                    'должно быть больше 0.'
                 )
 
         return data
