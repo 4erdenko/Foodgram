@@ -22,12 +22,53 @@ def validate_username(value):
 
     if value.lower() in settings.FORBIDDEN_USERNAMES:
         raise ValidationError(
-            f'Вы не можете использовать {value} в качестве имени пользователя.'
+            f'\nВы не можете использовать {value} в качестве имени '
+            f'пользователя.'
         )
 
-    invalid_chars = set(re.findall(r'[^\w.@+-]', value))
+
+def validate_password(value):
+    """
+    Validates the password for a user.
+
+    The password must meet the following criteria:
+    - Have at least 8 characters
+    - Include at least one uppercase letter
+    - Include at least one lowercase letter
+    - Include at least one numeric digit
+    - Include at least one special character
+    - Must not include the characters "<" or ">"
+
+    Args:
+        value (str): The password value to validate.
+
+    Raises:
+        ValidationError: If the password does not meet the criteria.
+    """
+
+    if len(value) < 8:
+        raise ValidationError(
+            '\nПароль должен содержать как минимум 8 символов.')
+
+    if not re.search(r'[A-Z]', value):
+        raise ValidationError(
+            '\nПароль должен содержать как минимум одну заглавную букву.')
+
+    if not re.search(r'[a-z]', value):
+        raise ValidationError(
+            '\nПароль должен содержать как минимум одну строчную букву.')
+
+    if not re.search(r'\d', value):
+        raise ValidationError(
+            '\nПароль должен содержать как минимум одну цифру.')
+
+    if not re.search(r'[!@#$%^&*(),.?":{}|]', value):
+        raise ValidationError(
+            '\nПароль должен содержать как минимум один специальный символ.')
+
+    invalid_chars = set(re.findall(r'[<>]', value))
     if invalid_chars:
         raise ValidationError(
-            f'Имя пользователя содержит недопустимые символы: '
+            f'\nПароль содержит недопустимые символы: '
             f'{", ".join(invalid_chars)}'
         )
