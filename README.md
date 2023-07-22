@@ -30,6 +30,7 @@ Foodgram Project React is a web platform where users can share their recipes, ad
 - [Configuration](#configuration)
 - [Documentation](#documentation)
 - [Data Import](#data-import)
+- [CI/CD](#continuous-integration-and-deployment)
 - [Contributing](#contributing)
 - [Credits](#credits)
 - [License](#license)
@@ -150,7 +151,45 @@ To import ingredient data into your application, navigate to the root directory 
 python manage.py import_ingredients path/to/ingredients.csv
 ```
 Or make sure that the ingredients.csv file is in the same directory.
+## Continuous Integration and Deployment
 
+The project uses GitHub Actions to automatically run tests, build Docker images, and deploy the application whenever changes are pushed to the `master` branch. 
+
+The CI/CD workflow is defined in a file named `.github/workflows/pipeline.yml` in your repository.
+
+The workflow consists of the following jobs:
+
+- `backend_tests_and_build_and_push_to_docker_hub`: This job runs the backend tests, builds the backend Docker image, and pushes it to Docker Hub.
+
+- `build_frontend_and_push_to_docker_hub`: This job depends on the successful completion of the previous job. It builds the frontend Docker image and pushes it to Docker Hub.
+
+- `Deployment`: This job depends on the successful completion of the previous job. It prepares the environment on the server, deploys the new Docker images, and handles database migrations and static files.
+
+- `Telegram_Notification`: This job sends a notification to a specified Telegram chat upon successful deployment.
+
+### Configuration
+
+The workflow uses GitHub Secrets to manage sensitive data like usernames, passwords, and SSH keys. You will need to set up these secrets in your GitHub repository's settings.
+
+Here's what each secret is used for:
+
+- `DOCKER_USERNAME`: Your Docker Hub username.
+- `DOCKER_PASSWORD`: Your Docker Hub password.
+- `HOST`: The IP address or domain name of your server.
+- `USER`: The username you use to SSH into your server.
+- `SSH_KEY`: The private SSH key to connect to your server.
+- `SSH_PASSPHRASE`: The passphrase of your SSH key, if it's protected by one.
+- `ENV`: The environment variables for your application, formatted as a string.
+- `TELEGRAM_TOKEN`: The token for the Telegram bot that sends deployment notifications.
+- `TELEGRAM_TO`: The ID or username of the Telegram chat where deployment notifications are sent.
+
+### Deployment
+
+Whenever you push changes to the `master` branch, the workflow runs and automatically deploys your application if the tests pass and the Docker images build successfully.
+
+Upon successful deployment, you will receive a notification in the specified Telegram chat. If something goes wrong, you can check the workflow's logs in your repository's "Actions" tab on GitHub.
+
+**Note:** This workflow assumes that you have a server set up with Docker and Docker Compose installed. If your server setup is different, you might need to modify the workflow file to fit your needs.
 ## Contributing
 
 Contributions are welcome. Please open an issue to discuss the proposed changes, or open a pull request with changes.
