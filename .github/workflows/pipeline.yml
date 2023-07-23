@@ -133,6 +133,15 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           source: "infra/default.conf"
           target: "foodgram/config/nginx/conf.d"
+      - name: Copy docs folder file via ssh
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          source: "docs"
+          target: "foodgram/docs"
       - name: Update directory permissions
         uses: appleboy/ssh-action@master
         with:
