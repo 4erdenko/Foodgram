@@ -33,7 +33,7 @@ services:
       - frontend
     image: nginx:latest
     ports:
-      - "9001:80"
+    - "${EXTERNAL_PORT:-80}:80"
     volumes:
       - ./config/nginx/conf.d:/etc/nginx/conf.d
       - ./docs:/usr/share/nginx/html/api/docs
