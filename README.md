@@ -102,6 +102,7 @@ SECRET_KEY='key'
 DEBUG=False
 ALLOWED_HOSTS=yourwebsite.com,111.222.333.444,127.0.0.1,localhost
 CSRF=https://yourwebsite.com,https://111.222.333.444,127,http://127.0.0.1,http://localhost
+EXTERNAL_PORT=your_port
 ```
 
 To configure your application, make a new file named `.env` and copy the contents of `.env.EXAMPLE` into it. Then replace the dummy values with your actual data.
@@ -118,7 +119,7 @@ Here's what each of the environment variables is used for:
 - `DEBUG`: A boolean flag that turns on/off debug mode in Django.
 - `ALLOWED_HOSTS`: A comma-separated list of strings representing the host/domain names that this Django site can serve.
 - `CSRF`: The list of trusted origins for CSRF. If not provided, Django will use `ALLOWED_HOSTS`.
-
+- `EXTERNAL_PORT`: Your custom port.
 **Note:** Remember to set `DEBUG` as `False` when you're running in a production environment. Also, make sure to use a strong, unpredictable secret key.
 ## Documentation
 

@@ -20,7 +20,8 @@ from reportlab.pdfgen import canvas
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
-from users.views import CreateDeleteMixin
+
+from backend.mixins import CreateDeleteMixin
 
 
 class RecipeViewSet(CreateDeleteMixin, ModelViewSet):
@@ -68,7 +69,7 @@ class RecipeViewSet(CreateDeleteMixin, ModelViewSet):
             BytesIO: The generated PDF file.
         """
         font_path = os.path.join(
-            settings.BASE_DIR, 'static', 'fonts', 'Roboto-Medium.ttf'
+            settings.BASE_DIR, 'resources', 'fonts', 'Roboto-Medium.ttf'
         )
 
         pdfmetrics.registerFont(TTFont('Roboto-Medium', font_path))
