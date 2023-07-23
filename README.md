@@ -120,6 +120,7 @@ Here's what each of the environment variables is used for:
 - `ALLOWED_HOSTS`: A comma-separated list of strings representing the host/domain names that this Django site can serve.
 - `CSRF`: The list of trusted origins for CSRF. If not provided, Django will use `ALLOWED_HOSTS`.
 - `EXTERNAL_PORT`: Your custom port.  
+
 **Note:** Remember to set `DEBUG` as `False` when you're running in a production environment. Also, make sure to use a strong, unpredictable secret key.
 ## Documentation
 
