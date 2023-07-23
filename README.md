@@ -124,17 +124,7 @@ Here's what each of the environment variables is used for:
 ## Documentation
 
 The project includes documentation for the API endpoints. The documentation is automatically generated and can be accessed via the web interface.
-You can read documentation via open `api/docs/` address.
-
-2. Run the docker-compose file:
-
-```bash
-docker compose up -d
-```
-
-This will start two containers: one for the frontend and another for the Nginx server. Nginx is configured to serve the frontend application and the documentation.
-
-3. Open your web browser and navigate to `http://localhost/api/docs`.
+Start project and open `http://localhost/api/docs` address.
 
 You should now be able to see the documentation for the project's API.
 ## Data Import
