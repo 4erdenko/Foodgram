@@ -141,7 +141,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           source: "docs"
-          target: "foodgram/docs"
+          target: "foodgram"
       - name: Update directory permissions
         uses: appleboy/ssh-action@master
         with:
