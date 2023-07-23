@@ -76,7 +76,7 @@ cd foodgram-project-react
 4. Run docker-compose to build and start the containers:
 
 ```bash
-cd infra
+cd
 docker compose up -d
 ```
 
