@@ -6,13 +6,6 @@ from django.conf import settings
 from django.db.models import Sum
 from django.http import FileResponse
 from django_filters.rest_framework import DjangoFilterBackend
-from recipes.filters import IngredientFilter, RecipeFilter
-from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
-                            ShoppingList, Tag)
-from recipes.permissions import IsAuthorOrStaffOrReadOnly
-from recipes.serializers import (FavoriteSerializer, IngredientSerializer,
-                                 RecipeSerializer, ShoppingListSerializer,
-                                 TagSerializer)
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -22,6 +15,13 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
 from backend.mixins import CreateDeleteMixin
+from recipes.filters import IngredientFilter, RecipeFilter
+from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
+                            ShoppingList, Tag)
+from recipes.permissions import IsAuthorOrStaffOrReadOnly
+from recipes.serializers import (FavoriteSerializer, IngredientSerializer,
+                                 RecipeSerializer, ShoppingListSerializer,
+                                 TagSerializer)
 
 
 class RecipeViewSet(CreateDeleteMixin, ModelViewSet):
