@@ -31,8 +31,7 @@ services:
     ports:
       - "9001:80"
     volumes:
-      - ./default.conf:/etc/nginx/conf.d/default.conf
-      - ../frontend/build:/usr/share/nginx/html/
-      - ../docs/:/usr/share/nginx/html/api/docs/
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - ./docs:/usr/share/nginx/html/api/docs
       - static:/static
       - media:/media
