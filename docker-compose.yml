@@ -9,19 +9,19 @@ services:
   db:
     image: postgres:13
     env_file:
-      - ../.env
+      - .env
     volumes:
       - pg_data:/var/lib/postgresql/data
 
   backend:
-    build: ../backend
-    env_file: ../.env
+    build: backend
+    env_file: .env
     volumes:
       - static:/app/backend_static
       - media:/app/media
 
   frontend:
-    build: ../frontend
+    build: frontend
     command: cp -r /app/build/. /fronted_static/
     volumes:
       - static:/fronted_static

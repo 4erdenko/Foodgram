@@ -122,8 +122,8 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "infra/docker-compose.production.yml"
-          target: "foodgram/docker-compose.production.yml"
+          source: "docker-compose.production.yml"
+          target: "foodgram"
       - name: Copy nginx configuration file via ssh
         uses: appleboy/scp-action@master
         with:
@@ -131,7 +131,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "infra/default.conf"
+          source: "default.conf"
           target: "foodgram/config/nginx/conf.d"
       - name: Copy docs folder file via ssh
         uses: appleboy/scp-action@master
