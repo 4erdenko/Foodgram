@@ -124,14 +124,7 @@ Here's what each of the environment variables is used for:
 ## Documentation
 
 The project includes documentation for the API endpoints. The documentation is automatically generated and can be accessed via the web interface.
-
-To run the documentation locally, ensure you have Docker and docker-compose installed, then follow the steps below:
-
-1. Navigate to the `infra/api` directory:
-
-```bash
-cd infra/api
-```
+You can read documentation via open `api/docs/` address.
 
 2. Run the docker-compose file:
 
